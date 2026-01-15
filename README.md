@@ -18,6 +18,6 @@ npm install
 npm run
 ```
 
-[# Live Deployment](https://diamondfitforge.netlify.app/)
+# [Live Deployment](https://diamondfitforge.netlify.app/)
 
 
