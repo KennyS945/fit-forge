@@ -7,17 +7,24 @@ import ExerciseDetail from './pages/ExerciseDetail';
 import Home from './pages/Home';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
+import Cart from './pages/Cart';
+import BMICalculator from './pages/BMICalculator';
+import { CartProvider } from './context/CartContext';
 
 const App = () => {
   return (
-    <Box width="400px" sx={{ width: { xl: '1488px' } }} m="auto">
-        <Navbar />
-        <Routes>
-            <Route path = "/" element={<Home />} />
-            <Route path = "/exercise/:id" element={<ExerciseDetail />} />
-        </Routes>
-        <Footer />
-    </Box>
+    <CartProvider>
+      <Box width="400px" sx={{ width: { xl: '1488px' } }} m="auto">
+          <Navbar />
+          <Routes>
+              <Route path = "/" element={<Home />} />
+              <Route path = "/exercise/:id" element={<ExerciseDetail />} />
+              <Route path = "/cart" element={<Cart />} />
+              <Route path = "/bmi-calculator" element={<BMICalculator />} />
+          </Routes>
+          <Footer />
+      </Box>
+    </CartProvider>
   )
 }
 

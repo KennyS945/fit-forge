@@ -20,9 +20,24 @@ const SearchExercises = ({ setExercises, bodyPart, setBodyPart }) => {
 
   const handleSearch = async () => {
     if (search) {
-      const exercisesData = await fetchData('https://exercisedb.p.rapidapi.com/exercises', exerciseOptions);
+      let allExercises = [];
+      let offset = 0;
+      const limit = 100;
 
-      const searchedExercises = exercisesData.filter(
+      // Fetch exercises in batches
+      let hasMore = true;
+      while (hasMore) {
+        const currentData = await fetchData(`https://exercisedb.p.rapidapi.com/exercises?limit=${limit}&offset=${offset}`, exerciseOptions);
+
+        if (currentData.length === 0) {
+          hasMore = false;
+        } else {
+          allExercises = [...allExercises, ...currentData];
+          offset += limit;
+        }
+      }
+
+      const searchedExercises = allExercises.filter(
         (item) => item.name.toLowerCase().includes(search)
                || item.target.toLowerCase().includes(search)
                || item.equipment.toLowerCase().includes(search)

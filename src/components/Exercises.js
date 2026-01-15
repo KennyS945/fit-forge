@@ -13,14 +13,30 @@ const Exercises = ({ exercises, setExercises, bodyPart }) => {
   useEffect(() => {
     const fetchExercisesData = async () => {
       let exercisesData = [];
+      let allExercises = [];
+      let offset = 0;
+      const limit = 100;
 
-      if (bodyPart === 'all') {
-        exercisesData = await fetchData('https://exercisedb.p.rapidapi.com/exercises', exerciseOptions);
-      } else {
-        exercisesData = await fetchData(`https://exercisedb.p.rapidapi.com/exercises/bodyPart/${bodyPart}`, exerciseOptions);
+      // Fetch exercises in batches
+      let hasMore = true;
+      while (hasMore) {
+        let currentData = [];
+        
+        if (bodyPart === 'all') {
+          currentData = await fetchData(`https://exercisedb.p.rapidapi.com/exercises?limit=${limit}&offset=${offset}`, exerciseOptions);
+        } else {
+          currentData = await fetchData(`https://exercisedb.p.rapidapi.com/exercises/bodyPart/${bodyPart}?limit=${limit}&offset=${offset}`, exerciseOptions);
+        }
+
+        if (currentData.length === 0) {
+          hasMore = false;
+        } else {
+          allExercises = [...allExercises, ...currentData];
+          offset += limit;
+        }
       }
 
-      setExercises(exercisesData);
+      setExercises(allExercises);
     };
 
     if (exercises.length === 0) {
